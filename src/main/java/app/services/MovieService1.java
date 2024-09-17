@@ -7,43 +7,75 @@ import java.net.http.HttpResponse;
 import java.io.IOException;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MovieService1 {
+    private static final String API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODUyNThiYjUwOGE5MDM3MWE4NWRkMzRlZGY1ZTUyMyIsIm5iZiI6MTcyNjU2MTg0OS44NjM1MzMsInN1YiI6IjY2ZTE2Y2U4MDAwMDAwMDAwMDIyYWJjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.oP59a5lAHZGHNHykBDK6DQh2UwWoN2GYQE6mE45y7KQ";
+    private static final String BASE_URL = "https://api.themoviedb.org/3";
 
-    public static void main(String[] args) {
-        // Opret HttpClient
+    public static void main(String[] args) throws Exception {
         HttpClient client = HttpClient.newHttpClient();
 
-        // Opret forespørgsel
+        // 1. Fetch the list of movies
+        String discoverMoviesUrl = BASE_URL + "/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&release_date.gte=2019-09-17&sort_by=popularity.desc&with_origin_country=DK";
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=da&page=1&region=DK&release_date.gte=2019-01-01&release_date.lte=2024-12-31&sort_by=popularity.desc&with_origin_country=DK"))
+                .uri(new URI(discoverMoviesUrl))
                 .header("accept", "application/json")
-                .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODUyNThiYjUwOGE5MDM3MWE4NWRkMzRlZGY1ZTUyMyIsIm5iZiI6MTcyNjU2MTg0OS44NjM1MzMsInN1YiI6IjY2ZTE2Y2U4MDAwMDAwMDAwMDIyYWJjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.oP59a5lAHZGHNHykBDK6DQh2UwWoN2GYQE6mE45y7KQ")
+                .header("Authorization", "Bearer " + API_KEY)
                 .GET()
                 .build();
 
-        try {
-            // Send forespørgsel og få svar
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            // Kontroller om statuskoden er 200 (OK)
-            if (response.statusCode() == 200) {
-                String responseBody = response.body();
+        if (response.statusCode() == 200) {
+            String responseBody = response.body();
 
-                // Opret ObjectMapper til at behandle JSON
-                ObjectMapper objectMapper = new ObjectMapper();
+            // Parse JSON to get the movie IDs
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(responseBody);
 
-                // Konverter JSON til Java-objekt (Map eller specifik DTO)
-                Map<String, Object> jsonData = objectMapper.readValue(responseBody, Map.class);
+            // Get the list of movie results
+            JsonNode movies = jsonNode.get("results");
 
-                // Udskriv JSON-data (eller behandl dem yderligere)
-                System.out.println(jsonData);
-            } else {
-                System.out.println("Request failed with status code: " + response.statusCode());
+            // Loop through each movie and fetch credits by movie ID
+            for (JsonNode movie : movies) {
+                String movieId = movie.get("id").asText();
+                System.out.println("Fetching credits for Movie ID: " + movieId);
+
+                // Call method to fetch credits for each movie
+                fetchMovieCredits(client, movieId);
             }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        } else {
+            System.out.println("Error: " + response.statusCode());
+        }
+    }
+
+    // Method to fetch credits using the movie ID
+    private static void fetchMovieCredits(HttpClient client, String movieId) throws Exception {
+        String creditsUrl = BASE_URL + "/movie/" + movieId + "/credits?language=da";
+
+        HttpRequest creditsRequest = HttpRequest.newBuilder()
+                .uri(new URI(creditsUrl))
+                .header("accept", "application/json")
+                .header("Authorization", "Bearer " + API_KEY)
+                .GET()
+                .build();
+
+        HttpResponse<String> creditsResponse = client.send(creditsRequest, HttpResponse.BodyHandlers.ofString());
+
+        if (creditsResponse.statusCode() == 200) {
+            System.out.println("Credits for Movie ID " + movieId + ": " + creditsResponse.body());
+        } else {
+            System.out.println("Failed to fetch credits for Movie ID " + movieId + ": " + creditsResponse.statusCode());
         }
     }
 }
