@@ -24,7 +24,7 @@ public class MovieService {
         HttpClient client = HttpClient.newHttpClient();
         List<MovieDTO> movieDTOList = new ArrayList<>();
 
-        // 1. Henter listen over danske film
+        /*  Henter listen over danske film */
         String discoverMoviesUrl = BASE_URL + "/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&release_date.gte=2019-09-17&sort_by=popularity.desc&with_origin_country=DK";
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(discoverMoviesUrl))
@@ -38,13 +38,13 @@ public class MovieService {
         if (response.statusCode() == 200) {
             String responseBody = response.body();
 
-            // 2. Parse JSON for at få filmlisten
+            /* Parse JSON for at få filmlisten */
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(responseBody);
 
             JsonNode movies = jsonNode.get("results");
 
-            // 3. For hver film, opret en MovieDTO og tilføj actors og director
+            /*  For hver film, oprettes en MovieDTO og tilføj actors og director */
             for (JsonNode movie : movies) {
                 int movieId = movie.get("id").asInt();
                 MovieDTO movieDTO = new MovieDTO();
@@ -65,7 +65,7 @@ public class MovieService {
         return movieDTOList;
     }
 
-    // Metode til at hente credits (skuespillere og instruktør) og opdatere MovieDTO
+    /* Metode til at hente credits (skuespillere og instruktør) og opdatere MovieDTO */
     private void fetchMovieCredits(HttpClient client, int movieId, MovieDTO movieDTO) throws Exception {
         String creditsUrl = BASE_URL + "/movie/" + movieId + "/credits?language=en-US";
         HttpRequest request = HttpRequest.newBuilder()
@@ -80,14 +80,14 @@ public class MovieService {
         if (response.statusCode() == 200) {
             String responseBody = response.body();
 
-            // Parse JSON for at få cast og crew
+            /* Parse JSON for at få cast og crew */
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(responseBody);
 
             List<ActorDTO> actorDTOList = new ArrayList<>();
             DirectorDTO directorDTO = null;
 
-            // Hent cast (skuespillere)
+            /* Henter cast (cast bruges i API. Acting - skuespillere) */
             JsonNode cast = jsonNode.get("cast");
             for (JsonNode actorNode : cast) {
                 String knownFor = actorNode.get("known_for_department").asText();
@@ -99,7 +99,7 @@ public class MovieService {
                 }
             }
 
-            // Hent crew (instruktører)
+            /* Henter crew ( Crew fra API. instruktører) */
             JsonNode crew = jsonNode.get("crew");
             for (JsonNode crewMember : crew) {
                 String knownFor = crewMember.get("known_for_department").asText();
@@ -110,7 +110,7 @@ public class MovieService {
                     break;  // Hvis du kun vil have én instruktør
                 }
             }
-            // Tilføj skuespillere og instruktør til MovieDTO
+            /* Tilføjer skuespillere og instruktør til MovieDTO */
             movieDTO.setActors(actorDTOList);
             movieDTO.setDirector(directorDTO);
         } else {
