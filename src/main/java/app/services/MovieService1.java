@@ -19,13 +19,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MovieService1 {
-    private static final String API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODUyNThiYjUwOGE5MDM3MWE4NWRkMzRlZGY1ZTUyMyIsIm5iZiI6MTcyNjU2MTg0OS44NjM1MzMsInN1YiI6IjY2ZTE2Y2U4MDAwMDAwMDAwMDIyYWJjOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.oP59a5lAHZGHNHykBDK6DQh2UwWoN2GYQE6mE45y7KQ";
+    private static final String API_KEY = System.getenv("api_key");
     private static final String BASE_URL = "https://api.themoviedb.org/3";
 
-    public static void main(String[] args) throws Exception {
+    public static void fetchDanishMovies() throws Exception {
         HttpClient client = HttpClient.newHttpClient();
 
-        // 1. Fetch the list of movies
+        // 1. Fetch the list of Danish movies
         String discoverMoviesUrl = BASE_URL + "/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&release_date.gte=2019-09-17&sort_by=popularity.desc&with_origin_country=DK";
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(discoverMoviesUrl))
@@ -58,7 +58,6 @@ public class MovieService1 {
             System.out.println("Error: " + response.statusCode());
         }
     }
-
     // Method to fetch credits using the movie ID
     private static void fetchMovieCredits(HttpClient client, String movieId) throws Exception {
         String creditsUrl = BASE_URL + "/movie/" + movieId + "/credits?language=da";
