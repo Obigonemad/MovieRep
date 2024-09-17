@@ -24,6 +24,9 @@ public class Movie {
     private double rating;
     private LocalDate releaseDate;
 
+    @OneToMany (mappedBy = "movie")
+    private List<Genre> genre = new ArrayList<>();
+
     @ManyToOne
     private Director director;
 
