@@ -1,5 +1,6 @@
 package app.dto;
 
+import app.entities.Movie;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,10 +33,16 @@ public class MovieDTO {
     private DirectorDTO director;
 
 
-
-
-
+    public MovieDTO(Movie movie) {
+        this.id = movie.getId();
+        this.title = movie.getTitle();
+        this.rating = movie.getRating();
+        this.releaseDate = movie.getReleaseDate();
+        this.genre = new GenreDTO(movie.getGenre());
+        this.actors = new ActorDTO(movie.getActors());
+        this.director = new DirectorDTO(movie.getDirector());
     }
+}
 
 
 
