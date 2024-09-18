@@ -1,6 +1,7 @@
 package app.services;
 
 
+import app.dao.MovieDAO;
 import app.dto.ActorDTO;
 import app.dto.DirectorDTO;
 import app.dto.MovieDTO;
@@ -20,6 +21,9 @@ import java.util.List;
 public class MovieService {
     private static final String API_KEY = System.getenv("api_key");
     private static final String BASE_URL = "https://api.themoviedb.org/3";
+
+    public MovieService(MovieDAO movieDAO) {
+    }
 
     public List<MovieDTO> getDanishMovies() throws Exception {
         HttpClient client = HttpClient.newHttpClient();
@@ -88,7 +92,6 @@ public class MovieService {
                 String knownFor = actorNode.get("known_for_department").asText();
                 if (knownFor.equals("Acting")) {
                     ActorDTO actorDTO = new ActorDTO();
-                    actorDTO.setId(actorNode.get("id").asInt());
                     actorDTO.setName(actorNode.get("name").asText());
                     actorDTOList.add(actorDTO);
                 }
@@ -100,7 +103,6 @@ public class MovieService {
                 String knownFor = crewMember.get("known_for_department").asText();
                 if (knownFor.equals("Directing")) {
                     directorDTO = new DirectorDTO();
-                    directorDTO.setId(crewMember.get("id").asInt());
                     directorDTO.setName(crewMember.get("name").asText());
                     break;  // Hvis du kun vil have én instruktør
                 }

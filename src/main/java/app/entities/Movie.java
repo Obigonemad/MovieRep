@@ -1,5 +1,7 @@
 package app.entities;
 
+import app.dto.GenreDTO;
+import app.dto.MovieDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,16 +18,17 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class Movie {
+
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;
     private double rating;
     private LocalDate releaseDate;
 
-    @OneToMany (mappedBy = "movie")
-    private List<Genre> genre = new ArrayList<>();
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Genre> genres = new ArrayList<>();
 
     @ManyToOne
     private Director director;
@@ -38,9 +41,13 @@ public class Movie {
     )
     private List<Actor> actors = new ArrayList<>();
 
-    public Movie(String title, double rating, LocalDate releaseDate) {
-        this.title = title;
-        this.rating = rating;
-        this.releaseDate = releaseDate;
+    public Movie(MovieDTO movieDTO) {
+        this.id = movieDTO.getId();
+        this.title = movieDTO.getTitle();
+        this.rating = movieDTO.getRating();
+        this.releaseDate = movieDTO.getReleaseDate();
+
     }
+
+
 }

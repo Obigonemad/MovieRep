@@ -13,16 +13,21 @@ import lombok.Setter;
 
 
 public class Genre {
+
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    public Genre(String name) {
+    // Constructor and other methods...
+
+    public Genre(Integer id, String name) {
+        this.id = id;
         this.name = name;
     }
 }
