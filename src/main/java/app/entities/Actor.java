@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.dto.ActorDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,16 @@ public class Actor {
     private List<Movie> movies =new ArrayList<>();
 
     public Actor( String name) {
+
+        this.name = name;
+    }
+
+    public Actor(ActorDTO actorDTO) {
+
+        this.name = actorDTO.getName();
+    }
+
+    public Actor(Integer id, String name) {
 
         this.name = name;
     }

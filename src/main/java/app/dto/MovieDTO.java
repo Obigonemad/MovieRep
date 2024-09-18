@@ -29,7 +29,6 @@ public class MovieDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
 
-    private List<GenreDTO> genre;
     private List<ActorDTO> actors;
     private DirectorDTO director;
 
@@ -39,11 +38,6 @@ public class MovieDTO {
         this.title = movie.getTitle();
         this.rating = movie.getRating();
         this.releaseDate = movie.getReleaseDate();
-        if (movie.getGenre() != null) {
-            this.genre = movie.getGenre().stream()
-                    .map(GenreDTO::new)   // Mapper hver genre til GenreDTO
-                    .collect(Collectors.toList());
-        }
 
         if (movie.getActors() != null) {
             this.actors = movie.getActors().stream()
