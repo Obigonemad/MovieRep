@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -38,8 +39,17 @@ public class MovieDTO {
         this.title = movie.getTitle();
         this.rating = movie.getRating();
         this.releaseDate = movie.getReleaseDate();
-        this.genre = new GenreDTO(movie.getGenre());
-        this.actors = new ActorDTO(movie.getActors());
+        if (movie.getGenre() != null) {
+            this.genre = movie.getGenre().stream()
+                    .map(GenreDTO::new)   // Mapper hver genre til GenreDTO
+                    .collect(Collectors.toList());
+        }
+
+        if (movie.getActors() != null) {
+            this.actors = movie.getActors().stream()
+                    .map(ActorDTO::new)   // Mapper hver skuespiller til ActorDTO
+                    .collect(Collectors.toList());
+        }
         this.director = new DirectorDTO(movie.getDirector());
         //hej
     }

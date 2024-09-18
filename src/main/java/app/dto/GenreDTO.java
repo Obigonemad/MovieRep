@@ -1,5 +1,6 @@
 package app.dto;
 
+import app.entities.Genre;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,8 +16,8 @@ public class GenreDTO {
     private int id;
     private String name;
 
-    public GenreDTO(String name, int id) {
-        this.name = name;
-        this.id = id;
+    public GenreDTO(Genre genre) {
+        this.name = genre.getName() ;
+        this.id = genre.getId();
     }
 }
