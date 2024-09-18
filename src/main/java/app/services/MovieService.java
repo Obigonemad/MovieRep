@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieService {
-    private static final String API_KEY = System.getenv("api_key");
+    private static final String API_KEY = "api_key=" + System.getenv("api_key");
     private static final String BASE_URL = "https://api.themoviedb.org/3";
 
     public MovieService(MovieDAO movieDAO) {
@@ -29,11 +29,10 @@ public class MovieService {
         HttpClient client = HttpClient.newHttpClient();
 
         /*  Henter listen over danske film */
-        String discoverMoviesUrl = BASE_URL + "/discover/movie?include_adult=false&include_video=false&language=en-US&page="+ page +"&release_date.gte=2019-09-17&sort_by=popularity.desc&with_origin_country=DK";
+        String discoverMoviesUrl = BASE_URL + "/discover/movie?include_adult=false&include_video=false&language=en-US&page=" +
+                page +"&primary_release_date.gte=2019-09-17&sort_by=popularity.desc&with_origin_country=DK&";
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(discoverMoviesUrl))
-                .header("accept", "application/json")
-                .header("Authorization", "Bearer " + API_KEY)
+                .uri(new URI(discoverMoviesUrl + API_KEY))
                 .GET()
                 .build();
 
@@ -59,6 +58,7 @@ public class MovieService {
             return movieDTOList;
         } else {
             System.out.println("GET request failed. Status code: " + response.statusCode());
+            System.out.println("discoverMoviesUrl + API_KEY = " + discoverMoviesUrl + API_KEY);
         }
    return null;
     }
@@ -66,11 +66,9 @@ public class MovieService {
 
     /* Metode til at hente credits (skuespillere og instruktør) og opdatere MovieDTO */
     private void fetchMovieCredits(HttpClient client, int movieId, MovieDTO movieDTO) throws Exception {
-        String creditsUrl = BASE_URL + "/movie/" + movieId + "/credits?language=en-US";
+        String creditsUrl = BASE_URL + "/movie/" + movieId + "/credits?language=en-US&";
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(creditsUrl))
-                .header("accept", "application/json")
-                .header("Authorization", "Bearer " + API_KEY)
+                .uri(new URI(creditsUrl + API_KEY))
                 .GET()
                 .build();
 
