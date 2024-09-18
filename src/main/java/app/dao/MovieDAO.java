@@ -84,7 +84,7 @@ public class MovieDAO {
         }
         return director;
     }
-
+//hej
     private Actor findOrCreateActor(EntityManager em, String name) {
         Actor actor = em.createQuery("SELECT a FROM Actor a WHERE a.name = :name", Actor.class)
                 .setParameter("name", name)
