@@ -18,6 +18,7 @@ import jakarta.persistence.Persistence;
 
 import java.io.ObjectInputFilter;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -39,11 +40,14 @@ public class Main {
         // Opret en MovieService
         MovieService movieService = new MovieService(movieDAO);
 
+        List<MovieDTO> allMoviesDTOs = new ArrayList<>();
         // Hent danske film med din eksisterende metode
-        List<MovieDTO> movieDTOs = movieService.getDanishMovies();  // antag at denne metode returnerer en liste af MovieDTO objekter
+        for (int page = 1; page<=66; page++) {
+            allMoviesDTOs.addAll(movieService.getDanishMovies(page));  // antag at denne metode returnerer en liste af MovieDTO objekter
+        }
 
         // Gem hver film i databasen
-        for (MovieDTO movieDTO : movieDTOs) {
+        for (MovieDTO movieDTO : allMoviesDTOs) {
             movieDAO.saveMovie(movieDTO);
         }
 

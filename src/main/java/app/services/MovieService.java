@@ -25,11 +25,11 @@ public class MovieService {
     public MovieService(MovieDAO movieDAO) {
     }
 
-    public List<MovieDTO> getDanishMovies() throws Exception {
+    public List<MovieDTO> getDanishMovies(int page) throws Exception {
         HttpClient client = HttpClient.newHttpClient();
 
         /*  Henter listen over danske film */
-        String discoverMoviesUrl = BASE_URL + "/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&release_date.gte=2019-09-17&sort_by=popularity.desc&with_origin_country=DK";
+        String discoverMoviesUrl = BASE_URL + "/discover/movie?include_adult=false&include_video=false&language=en-US&page="+ page +"&release_date.gte=2019-09-17&sort_by=popularity.desc&with_origin_country=DK";
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(discoverMoviesUrl))
                 .header("accept", "application/json")
