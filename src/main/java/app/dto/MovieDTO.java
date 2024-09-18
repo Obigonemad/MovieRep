@@ -41,6 +41,7 @@ public class MovieDTO {
         this.genre = new GenreDTO(movie.getGenre());
         this.actors = new ActorDTO(movie.getActors());
         this.director = new DirectorDTO(movie.getDirector());
+        //hej
     }
 }
 
