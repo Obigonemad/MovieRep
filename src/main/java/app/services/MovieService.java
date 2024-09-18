@@ -6,6 +6,7 @@ import app.dto.DirectorDTO;
 import app.dto.MovieDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.net.URI;
@@ -22,7 +23,6 @@ public class MovieService {
 
     public List<MovieDTO> getDanishMovies() throws Exception {
         HttpClient client = HttpClient.newHttpClient();
-        List<MovieDTO> movieDTOList = new ArrayList<>();
 
         /*  Henter listen over danske film */
         String discoverMoviesUrl = BASE_URL + "/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&release_date.gte=2019-09-17&sort_by=popularity.desc&with_origin_country=DK";
@@ -36,34 +36,29 @@ public class MovieService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
-            String responseBody = response.body();
 
-            /* Parse JSON for at få filmlisten */
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(responseBody);
-
+            ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+            /* Hent og returner listen over MovieDTO direkte fra JSON */
+            JsonNode jsonNode = objectMapper.readTree(response.body());
             JsonNode movies = jsonNode.get("results");
 
-            /*  For hver film, oprettes en MovieDTO og tilføj actors og director */
-            for (JsonNode movie : movies) {
-                int movieId = movie.get("id").asInt();
-                MovieDTO movieDTO = new MovieDTO();
-                movieDTO.setId(movieId);
-                movieDTO.setTitle(movie.get("original_title").asText());
-                movieDTO.setRating(movie.get("vote_average").asDouble());
-                movieDTO.setReleaseDate(LocalDate.parse(movie.get("release_date").asText()));
+            /* Opretter MovieDTO liste */
+            List<MovieDTO> movieDTOList = new ArrayList<>();
+            for (JsonNode movieNode : movies) {
+                MovieDTO movieDTO = objectMapper.treeToValue(movieNode, MovieDTO.class);
 
-                // Henter skuespillere og instruktører for filmen
-                fetchMovieCredits(client, movieId, movieDTO);
+                /* Henter skuespillere og instruktører for filmen */
+                fetchMovieCredits(client, movieDTO.getId(), movieDTO);
 
-                // Tilføjer MovieDTO til listen
                 movieDTOList.add(movieDTO);
             }
+            return movieDTOList;
         } else {
-            System.out.println("Error: " + response.statusCode());
+            System.out.println("GET request failed. Status code: " + response.statusCode());
         }
-        return movieDTOList;
+   return null;
     }
+
 
     /* Metode til at hente credits (skuespillere og instruktør) og opdatere MovieDTO */
     private void fetchMovieCredits(HttpClient client, int movieId, MovieDTO movieDTO) throws Exception {
@@ -80,7 +75,7 @@ public class MovieService {
         if (response.statusCode() == 200) {
             String responseBody = response.body();
 
-            /* Parse JSON for at få cast og crew */
+            /* Parser JSON for at få cast og crew */
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(responseBody);
 
