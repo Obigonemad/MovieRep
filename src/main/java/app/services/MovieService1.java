@@ -42,7 +42,6 @@ public class MovieService1 {
             // Parse JSON to get the movie IDs
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(responseBody);
-
             // Get the list of movie results
             JsonNode movies = jsonNode.get("results");
 
