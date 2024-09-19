@@ -194,8 +194,8 @@ public class MovieDAO {
 
     public int deleteMovieById(Integer id) {
         try (EntityManager em = emf.createEntityManager()) {
-            Movie deleted = em.find(Movie.class, id);
             em.getTransaction().begin();
+            Movie deleted = em.find(Movie.class, id);
             em.remove(deleted);
             em.getTransaction().commit();
             return deleted.getId();
