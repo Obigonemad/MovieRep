@@ -157,6 +157,25 @@ public class MovieDAO {
             return topMovieDTOs;
         }
     }
+
+    public static List<MovieDTO> getBottom10Rated() {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Movie> bottomRatedMovies = em.createQuery("SELECT m FROM Movie m WHERE m.rating > 0 ORDER BY m.rating ASC", Movie.class)
+                    .setMaxResults(10)
+                    .getResultList();
+
+            List<MovieDTO> bottomMovieDTOs = new ArrayList<>();
+            for (Movie movie : bottomRatedMovies) {
+                bottomMovieDTOs.add(new MovieDTO(movie));
+            }
+
+            for (MovieDTO movieDTO : bottomMovieDTOs) {
+                System.out.println("Title: " + movieDTO.getTitle() + ", Rating: " + movieDTO.getRating());
+            }
+
+            return bottomMovieDTOs;
+        }
+    }
 }
 
 

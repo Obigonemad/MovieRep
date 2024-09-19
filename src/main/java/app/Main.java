@@ -65,10 +65,13 @@ public class Main {
 
 
         /*AVARAGERATING*/
-        movieDAO.getAvarageRating();
+       // movieDAO.getAvarageRating();
 
+        /*TOP10*/
         movieDAO.getTop10Rated();
 
+        /*Bottom10*/
+        movieDAO.getBottom10Rated();
         emf.close();
     }
 }
