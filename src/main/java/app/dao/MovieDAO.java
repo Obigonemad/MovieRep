@@ -127,5 +127,14 @@ public class MovieDAO {
         return new MovieDTO(movie);
     }
 
+    public int deleteMovieById(Integer id) {
+        try (EntityManager em = emf.createEntityManager()) {
+            Movie deleted = em.find(Movie.class, id);
+            em.getTransaction().begin();
+            em.remove(deleted);
+            em.getTransaction().commit();
+            return deleted.getId();
+        }
+    }
 
 }

@@ -52,9 +52,10 @@ public class Main {
 //        }
 
 
-        MovieDTO m1 = new MovieDTO("bobo", LocalDate.of(2020,01,01));
-//        movieDAO.getAllMovieTitles();
-        movieDAO.createMovieFromMain(m1);
+//        MovieDTO m1 = new MovieDTO("bobo", LocalDate.of(2020,01,01));
+////        movieDAO.getAllMovieTitles();
+//        movieDAO.createMovieFromMain(m1);
+//        movieDAO.deleteMovieById();
 
         // Luk EntityManagerFactory
         emf.close();
