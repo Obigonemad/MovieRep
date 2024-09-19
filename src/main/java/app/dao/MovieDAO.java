@@ -128,7 +128,7 @@ public class MovieDAO {
         }
     }
 
-    public static Double getAvarageRating () {
+    public static Double getAvarageRating() {
         try (EntityManager em = emf.createEntityManager()) {
             Double avarageRating = em.createQuery("SELECT AVG(m.rating) FROM Movie m WHERE m.rating > 0", Double.class)
                     .getSingleResult();
@@ -136,6 +136,25 @@ public class MovieDAO {
             System.out.println(avarageRating);
             return avarageRating;
 
+        }
+    }
+
+    public static List<MovieDTO> getTop10Rated() {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Movie> topRatedMovies = em.createQuery("SELECT m FROM Movie m WHERE m.rating > 0 ORDER BY m.rating DESC", Movie.class)
+                    .setMaxResults(10) // Begræns resultaterne til de øverste 10 film
+                    .getResultList();
+
+            List<MovieDTO> topMovieDTOs = new ArrayList<>();
+            for (Movie movie : topRatedMovies) {
+                topMovieDTOs.add(new MovieDTO(movie));
+
+            }
+
+            for (MovieDTO movieDTO : topMovieDTOs) {
+                System.out.println("Title: " + movieDTO.getTitle() + ", Rating: " + movieDTO.getRating());
+            }
+            return topMovieDTOs;
         }
     }
 }

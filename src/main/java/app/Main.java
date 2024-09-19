@@ -62,10 +62,12 @@ public class Main {
 //
 //
 //        }
-        // Luk EntityManagerFactory
+
 
         /*AVARAGERATING*/
         movieDAO.getAvarageRating();
+
+        movieDAO.getTop10Rated();
 
         emf.close();
     }
