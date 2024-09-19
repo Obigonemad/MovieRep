@@ -50,6 +50,17 @@ public class Main {
 //        for (MovieDTO movieDTO : allMoviesDTOs) {
 //            movieDAO.saveMovie(movieDTO);
 //        }
+
+
+//        movieDAO.getAllMovieTitles();
+//        MovieDTO m1 = new MovieDTO("bobo", LocalDate.of(2020,01,01));
+////
+//        movieDAO.createMovieFromMain(m1);
+//        movieDAO.updateEntity(789,"bobobo");
+//        movieDAO.deleteMovieById();
+
+       
+
 /*UDSKRIVER ALLE FILMTITLER I DATABASEN*/
         //movieDAO.getAllMovieTitles();
 
@@ -62,6 +73,7 @@ public class Main {
 //
 //
 //        }
+
 
 
         /*AVARAGERATING*/

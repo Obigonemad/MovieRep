@@ -114,6 +114,7 @@ public class MovieDAO {
         }
     }
 
+
     public static List<MovieDTO> getMoviesByTitle(String title) {
         try (EntityManager em = emf.createEntityManager()) {
             List<Movie> movies = em.createQuery("SELECT m FROM Movie m WHERE LOWER(m.title) LIKE :title", Movie.class)
@@ -179,3 +180,48 @@ public class MovieDAO {
 }
 
 
+    public MovieDTO createMovieFromMain(MovieDTO movieDTO) {
+        Movie movie = new Movie(movieDTO.getTitle(), movieDTO.getReleaseDate());
+
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+
+            // Persist the movie
+            em.persist(movie);
+            em.getTransaction().commit();
+        }
+        return new MovieDTO(movie);
+    }
+
+    public int deleteMovieById(Integer id) {
+        try (EntityManager em = emf.createEntityManager()) {
+            Movie deleted = em.find(Movie.class, id);
+            em.getTransaction().begin();
+            em.remove(deleted);
+            em.getTransaction().commit();
+            return deleted.getId();
+        }
+    }
+
+    public MovieDTO updateEntity(Integer id, String updatedTitel) {
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            Movie movie = em.find(Movie.class, id);
+            if (movie == null) {
+                throw new IllegalArgumentException("Movie with id " + id + " not found.");
+            }
+
+            // Update the title
+            movie.setTitle(updatedTitel);
+
+            // Merge the updated entity back into the database
+            em.merge(movie);
+
+            em.getTransaction().commit();
+
+            // Convert Movie to MovieDTO (assuming you have a conversion method)
+            return new MovieDTO(movie);
+        }
+    }
+
+}

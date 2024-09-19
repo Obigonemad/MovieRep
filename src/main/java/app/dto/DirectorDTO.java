@@ -17,6 +17,7 @@ public class DirectorDTO {
     private String name;
 
     public DirectorDTO(Director director) {
+
         this.name = director.getName();
     }
 }

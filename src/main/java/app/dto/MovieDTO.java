@@ -1,5 +1,6 @@
 package app.dto;
 
+import app.entities.Actor;
 import app.entities.Movie;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -32,6 +33,10 @@ public class MovieDTO {
     private List<ActorDTO> actors;
     private DirectorDTO director;
 
+    public MovieDTO(String title, LocalDate releaseDate) {
+        this.title = title;
+        this.releaseDate = releaseDate;
+    }
 
     public MovieDTO(Movie movie) {
         this.id = movie.getId();
@@ -44,7 +49,11 @@ public class MovieDTO {
 //                    .map(ActorDTO::new)   // Mapper hver skuespiller til ActorDTO
 //                    .collect(Collectors.toList());
 //        }
-        this.director = new DirectorDTO(movie.getDirector());
+
+//        this.director = new DirectorDTO(movie.getDirector());
+
+       
+
         //hej
     }
 }
