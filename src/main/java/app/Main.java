@@ -50,7 +50,12 @@ public class Main {
 //        for (MovieDTO movieDTO : allMoviesDTOs) {
 //            movieDAO.saveMovie(movieDTO);
 //        }
-        movieDAO.getAllMovieTitles();
+
+
+        MovieDTO m1 = new MovieDTO("bobo", LocalDate.of(2020,01,01));
+//        movieDAO.getAllMovieTitles();
+        movieDAO.createMovieFromMain(m1);
+
         // Luk EntityManagerFactory
         emf.close();
 

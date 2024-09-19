@@ -47,4 +47,9 @@ public class Movie {
         this.releaseDate = movieDTO.getReleaseDate();
 
     }
+
+    public Movie(String title, LocalDate releaseDate) {
+        this.title = title;
+        this.releaseDate = releaseDate;
+    }
 }

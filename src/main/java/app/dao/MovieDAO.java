@@ -85,7 +85,8 @@ public class MovieDAO {
         }
         return director;
     }
-//hej
+
+    //hej
     private Actor findOrCreateActor(EntityManager em, String name) {
         Actor actor = em.createQuery("SELECT a FROM Actor a WHERE a.name = :name", Actor.class)
                 .setParameter("name", name)
@@ -99,6 +100,7 @@ public class MovieDAO {
         }
         return actor;
     }
+
     public void getAllMovieTitles() {
         try (EntityManager em = emf.createEntityManager()) {
             // Query to select only the title column
@@ -111,6 +113,19 @@ public class MovieDAO {
             }
         }
     }
+
+    public MovieDTO createMovieFromMain(MovieDTO movieDTO) {
+        Movie movie = new Movie(movieDTO.getTitle(), movieDTO.getReleaseDate());
+
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+
+            // Persist the movie
+            em.persist(movie);
+            em.getTransaction().commit();
+        }
+        return new MovieDTO(movie);
+    }
+
+
 }
-
-
