@@ -177,7 +177,6 @@ public class MovieDAO {
             return bottomMovieDTOs;
         }
     }
-}
 
 
     public MovieDTO createMovieFromMain(MovieDTO movieDTO) {
@@ -223,5 +222,4 @@ public class MovieDAO {
             return new MovieDTO(movie);
         }
     }
-
 }
