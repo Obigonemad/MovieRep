@@ -63,6 +63,10 @@ public class Main {
 //
 //        }
         // Luk EntityManagerFactory
+
+        /*AVARAGERATING*/
+        movieDAO.getAvarageRating();
+
         emf.close();
     }
 }

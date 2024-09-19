@@ -127,6 +127,17 @@ public class MovieDAO {
             return movieDTOs;
         }
     }
+
+    public static Double getAvarageRating () {
+        try (EntityManager em = emf.createEntityManager()) {
+            Double avarageRating = em.createQuery("SELECT AVG(m.rating) FROM Movie m WHERE m.rating > 0", Double.class)
+                    .getSingleResult();
+            System.out.println("Gennemsnitligt rating på alle film: ");
+            System.out.println(avarageRating);
+            return avarageRating;
+
+        }
+    }
 }
 
 
