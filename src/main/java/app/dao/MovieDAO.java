@@ -114,6 +114,72 @@ public class MovieDAO {
         }
     }
 
+
+    public static List<MovieDTO> getMoviesByTitle(String title) {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Movie> movies = em.createQuery("SELECT m FROM Movie m WHERE LOWER(m.title) LIKE :title", Movie.class)
+                    .setParameter("title", "%" + title.toLowerCase() + "%")
+                    .getResultList();
+
+            List<MovieDTO> movieDTOs = new ArrayList<>();
+            for (Movie movie : movies) {
+                movieDTOs.add(new MovieDTO(movie));
+            }
+            return movieDTOs;
+        }
+    }
+
+    public static Double getAvarageRating() {
+        try (EntityManager em = emf.createEntityManager()) {
+            Double avarageRating = em.createQuery("SELECT AVG(m.rating) FROM Movie m WHERE m.rating > 0", Double.class)
+                    .getSingleResult();
+            System.out.println("Gennemsnitligt rating på alle film: ");
+            System.out.println(avarageRating);
+            return avarageRating;
+
+        }
+    }
+
+    public static List<MovieDTO> getTop10Rated() {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Movie> topRatedMovies = em.createQuery("SELECT m FROM Movie m WHERE m.rating > 0 ORDER BY m.rating DESC", Movie.class)
+                    .setMaxResults(10) // Begræns resultaterne til de øverste 10 film
+                    .getResultList();
+
+            List<MovieDTO> topMovieDTOs = new ArrayList<>();
+            for (Movie movie : topRatedMovies) {
+                topMovieDTOs.add(new MovieDTO(movie));
+
+            }
+
+            for (MovieDTO movieDTO : topMovieDTOs) {
+                System.out.println("Title: " + movieDTO.getTitle() + ", Rating: " + movieDTO.getRating());
+            }
+            return topMovieDTOs;
+        }
+    }
+
+    public static List<MovieDTO> getBottom10Rated() {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Movie> bottomRatedMovies = em.createQuery("SELECT m FROM Movie m WHERE m.rating > 0 ORDER BY m.rating ASC", Movie.class)
+                    .setMaxResults(10)
+                    .getResultList();
+
+            List<MovieDTO> bottomMovieDTOs = new ArrayList<>();
+            for (Movie movie : bottomRatedMovies) {
+                bottomMovieDTOs.add(new MovieDTO(movie));
+            }
+
+            for (MovieDTO movieDTO : bottomMovieDTOs) {
+                System.out.println("Title: " + movieDTO.getTitle() + ", Rating: " + movieDTO.getRating());
+            }
+
+            return bottomMovieDTOs;
+        }
+    }
+}
+
+
     public MovieDTO createMovieFromMain(MovieDTO movieDTO) {
         Movie movie = new Movie(movieDTO.getTitle(), movieDTO.getReleaseDate());
 

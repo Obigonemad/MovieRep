@@ -51,6 +51,7 @@ public class Main {
 //            movieDAO.saveMovie(movieDTO);
 //        }
 
+
 //        movieDAO.getAllMovieTitles();
 //        MovieDTO m1 = new MovieDTO("bobo", LocalDate.of(2020,01,01));
 ////
@@ -58,10 +59,32 @@ public class Main {
 //        movieDAO.updateEntity(789,"bobobo");
 //        movieDAO.deleteMovieById();
 
-        // Luk EntityManagerFactory
+       
+
+/*UDSKRIVER ALLE FILMTITLER I DATABASEN*/
+        //movieDAO.getAllMovieTitles();
+
+
+        /*MULIGHED FOR AT SØGE PÅ TITEL*/
+//        List<MovieDTO> movies = MovieDAO.getMoviesByTitle("KÆRLIGHED");
+//
+//        for (MovieDTO movie : movies) {
+//            System.out.println(movie.getTitle());
+//
+//
+//        }
+
+
+
+        /*AVARAGERATING*/
+       // movieDAO.getAvarageRating();
+
+        /*TOP10*/
+        movieDAO.getTop10Rated();
+
+        /*Bottom10*/
+        movieDAO.getBottom10Rated();
         emf.close();
-
-
     }
 }
 

@@ -23,9 +23,9 @@ public class ActorDTO {
 
     public ActorDTO(Actor actor) {
         this.name = actor.getName();
-        for (Movie movie : actor.getMovies()) {
-            actorInMovies.add(new MovieDTO(movie));
-        }
-        this.actorInMovies = actorInMovies;
+//        for (Movie movie : actor.getMovies()) {
+//            actorInMovies.add(new MovieDTO(movie));
+//        }
+//        this.actorInMovies = actorInMovies;
     }
 }

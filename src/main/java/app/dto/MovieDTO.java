@@ -49,7 +49,11 @@ public class MovieDTO {
 //                    .map(ActorDTO::new)   // Mapper hver skuespiller til ActorDTO
 //                    .collect(Collectors.toList());
 //        }
+
 //        this.director = new DirectorDTO(movie.getDirector());
+
+       
+
         //hej
     }
 }
