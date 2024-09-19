@@ -137,4 +137,25 @@ public class MovieDAO {
         }
     }
 
+    public MovieDTO updateEntity(Integer id, String updatedTitel) {
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            Movie movie = em.find(Movie.class, id);
+            if (movie == null) {
+                throw new IllegalArgumentException("Movie with id " + id + " not found.");
+            }
+
+            // Update the title
+            movie.setTitle(updatedTitel);
+
+            // Merge the updated entity back into the database
+            em.merge(movie);
+
+            em.getTransaction().commit();
+
+            // Convert Movie to MovieDTO (assuming you have a conversion method)
+            return new MovieDTO(movie);
+        }
+    }
+
 }
