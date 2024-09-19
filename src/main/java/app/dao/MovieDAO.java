@@ -85,7 +85,8 @@ public class MovieDAO {
         }
         return director;
     }
-//hej
+
+    //hej
     private Actor findOrCreateActor(EntityManager em, String name) {
         Actor actor = em.createQuery("SELECT a FROM Actor a WHERE a.name = :name", Actor.class)
                 .setParameter("name", name)
@@ -99,6 +100,7 @@ public class MovieDAO {
         }
         return actor;
     }
+
     public void getAllMovieTitles() {
         try (EntityManager em = emf.createEntityManager()) {
             // Query to select only the title column
@@ -109,6 +111,20 @@ public class MovieDAO {
             for (String title : titles) {
                 System.out.println(title);
             }
+        }
+    }
+
+    public static List<MovieDTO> getMoviesByTitle(String title) {
+        try (EntityManager em = emf.createEntityManager()) {
+            List<Movie> movies = em.createQuery("SELECT m FROM Movie m WHERE LOWER(m.title) LIKE :title", Movie.class)
+                    .setParameter("title", "%" + title.toLowerCase() + "%")
+                    .getResultList();
+
+            List<MovieDTO> movieDTOs = new ArrayList<>();
+            for (Movie movie : movies) {
+                movieDTOs.add(new MovieDTO(movie));
+            }
+            return movieDTOs;
         }
     }
 }

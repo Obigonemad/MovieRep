@@ -50,11 +50,20 @@ public class Main {
 //        for (MovieDTO movieDTO : allMoviesDTOs) {
 //            movieDAO.saveMovie(movieDTO);
 //        }
-        movieDAO.getAllMovieTitles();
+/*UDSKRIVER ALLE FILMTITLER I DATABASEN*/
+        //movieDAO.getAllMovieTitles();
+
+
+        /*MULIGHED FOR AT SØGE PÅ TITEL*/
+//        List<MovieDTO> movies = MovieDAO.getMoviesByTitle("KÆRLIGHED");
+//
+//        for (MovieDTO movie : movies) {
+//            System.out.println(movie.getTitle());
+//
+//
+//        }
         // Luk EntityManagerFactory
         emf.close();
-
-
     }
 }
 

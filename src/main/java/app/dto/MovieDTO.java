@@ -39,11 +39,11 @@ public class MovieDTO {
         this.rating = movie.getRating();
         this.releaseDate = movie.getReleaseDate();
 
-        if (movie.getActors() != null) {
-            this.actors = movie.getActors().stream()
-                    .map(ActorDTO::new)   // Mapper hver skuespiller til ActorDTO
-                    .collect(Collectors.toList());
-        }
+//        if (movie.getActors() != null) {
+//            this.actors = movie.getActors().stream()
+//                    .map(ActorDTO::new)   // Mapper hver skuespiller til ActorDTO
+//                    .collect(Collectors.toList());
+//        }
         this.director = new DirectorDTO(movie.getDirector());
         //hej
     }
