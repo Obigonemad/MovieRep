@@ -10,6 +10,7 @@ import app.entities.Movie;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +98,18 @@ public class MovieDAO {
             em.persist(actor);
         }
         return actor;
+    }
+    public void getAllMovieTitles() {
+        try (EntityManager em = emf.createEntityManager()) {
+            // Query to select only the title column
+            List<String> titles = em.createQuery("SELECT m.title FROM Movie m", String.class)
+                    .getResultList();
+
+            // Print each title
+            for (String title : titles) {
+                System.out.println(title);
+            }
+        }
     }
 }
 

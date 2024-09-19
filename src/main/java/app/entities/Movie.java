@@ -3,10 +3,7 @@ package app.entities;
 import app.dto.GenreDTO;
 import app.dto.MovieDTO;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,11 +13,12 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class Movie {
 
+public class Movie {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;
@@ -31,6 +29,7 @@ public class Movie {
     private List<Genre> genres = new ArrayList<>();
 
     @ManyToOne
+    @ToString.Exclude
     private Director director;
 
     @ManyToMany
@@ -48,6 +47,4 @@ public class Movie {
         this.releaseDate = movieDTO.getReleaseDate();
 
     }
-
-
 }
