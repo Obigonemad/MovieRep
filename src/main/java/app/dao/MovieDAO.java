@@ -51,7 +51,6 @@ public class MovieDAO {
                 actors.add(actor);
             }
 
-            // Opret eller opdater Movie
             Movie movie = new Movie();
             movie.setTitle(movieDTO.getTitle());
             movie.setRating(movieDTO.getRating());

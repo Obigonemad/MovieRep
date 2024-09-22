@@ -40,13 +40,6 @@ public class Movie {
     )
     private List<Actor> actors = new ArrayList<>();
 
-    public Movie(MovieDTO movieDTO) {
-        this.id = movieDTO.getId();
-        this.title = movieDTO.getTitle();
-        this.rating = movieDTO.getRating();
-        this.releaseDate = movieDTO.getReleaseDate();
-
-    }
 
     public Movie(String title, LocalDate releaseDate) {
         this.title = title;

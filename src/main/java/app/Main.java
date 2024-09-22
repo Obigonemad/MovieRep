@@ -37,19 +37,19 @@ public class Main {
         // Opret DAO og Service
         MovieDAO movieDAO = MovieDAO.getInstance(emf);
 
-        // Opret en MovieService
-//        MovieService movieService = new MovieService(movieDAO);
-//
-//        List<MovieDTO> allMoviesDTOs = new ArrayList<>();
-//        // Hent danske film med din eksisterende metode
-//        for (int page = 1; page<=66; page++) {
-//            allMoviesDTOs.addAll(movieService.getDanishMovies(page));  // antag at denne metode returnerer en liste af MovieDTO objekter
-//        }
-//
-//        // Gem hver film i databasen
-//        for (MovieDTO movieDTO : allMoviesDTOs) {
-//            movieDAO.saveMovie(movieDTO);
-//        }
+        /* START: Gem i databasen */
+        MovieService movieService = new MovieService(movieDAO);
+
+        List<MovieDTO> allMoviesDTOs = new ArrayList<>();
+        // Hent danske film med din eksisterende metode
+        for (int page = 1; page<=66; page++) {
+            allMoviesDTOs.addAll(movieService.getDanishMovies(page));
+        }
+
+        // Gem hver film i databasen
+        for (MovieDTO movieDTO : allMoviesDTOs) {
+            movieDAO.saveMovie(movieDTO);
+        }
 
 
 //        movieDAO.getAllMovieTitles();
@@ -70,7 +70,6 @@ public class Main {
 //
 //        for (MovieDTO movie : movies) {
 //            System.out.println(movie.getTitle());
-//
 //
 //        }
 

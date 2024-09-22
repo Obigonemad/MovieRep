@@ -41,7 +41,7 @@ public class MovieService {
         if (response.statusCode() == 200) {
 
             ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-            /* Hent og returner listen over MovieDTO direkte fra JSON */
+
             JsonNode jsonNode = objectMapper.readTree(response.body());
             JsonNode movies = jsonNode.get("results");
 
